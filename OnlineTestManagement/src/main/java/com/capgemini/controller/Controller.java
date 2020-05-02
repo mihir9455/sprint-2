@@ -60,6 +60,26 @@ public class Controller {
 	public List<UserTest> viewAllUser() {
 		return userService.viewAll();
 	}
+	
+	@PostMapping("/addTest")
+	public Test addTest(@RequestBody Test test) {
+		
+		return testService.addTest(test);
+	}
+	
+	@DeleteMapping("/deleteTest/{id}")
+	public String deleteTest(@PathVariable(value="id") int testId) {
+		return testService.deleteTest(testId);
+	}
+	
+	@PutMapping("/updateTest/{id}")
+	public String updateTest(@PathVariable(value = "id")int testId,@RequestBody Test test) {
+		return testService.updateTest(testId, test);
+		
+	}
+	
+	
+}
 
 	
 
