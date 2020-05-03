@@ -78,6 +78,27 @@ public class Controller {
 		
 	}
 	
+	@PostMapping("/addQuestion/{id}")
+	public String addQuestion(@PathVariable(value = "id")int testId,@RequestBody Question question) {
+		Optional<Question> q = quesService.findById(question.getQuestionId());
+		if (!q.isPresent()) {
+			quesService.addQuestion(testId,question);
+			return "question added";
+		} 
+		return "question already exists";
+
+	}
+	
+	@DeleteMapping("/deleteQuestion/{id}")
+	public String deleteQuestion(@PathVariable(value = "id")int qId) {
+		return quesService.deleteQuestion(qId);
+	} 
+	
+	@GetMapping("/view")
+	public List<Question> viewAll() {
+		return quesService.viewAll();
+	}
+	
 	
 }
 
