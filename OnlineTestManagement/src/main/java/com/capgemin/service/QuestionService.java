@@ -57,5 +57,21 @@ public class QuestionService implements QuestionServiceI {
 		return dao.findById(id);
 
 	}
+	@Override
+    public String updateQuestion(int questionId,Question ques) {
+		
+		Optional<Question> findById=dao.findById(questionId);
+		if(findById.isPresent()) {
+			Question q=findById.get();
+			q.setQuestionTitle(ques.getQuestionTitle());
+			q.setQuestionOptions(ques.getQuestionOptions());
+			q.setQuestionAnswer(ques.getQuestionAnswer());
+			q.setQuestionMarks(ques.getQuestionMarks());
+			dao.save(q);
+			return "Question Updated";
+		}
+		return "Question does not exist";
+	}
+
 
 }
