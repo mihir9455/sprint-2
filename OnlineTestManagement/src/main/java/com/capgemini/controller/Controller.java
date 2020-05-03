@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.capgemini.dao.AnswerDao;
+//import com.capgemini.dao.AnswerDao;
 import com.capgemini.dao.QuestionDao;
 import com.capgemini.dao.TestDao;
 import com.capgemini.entity.Question;
 import com.capgemini.entity.Test;
 import com.capgemini.entity.UserTest;
-import com.capgemini.service.CalculateMarks;
-import com.capgemini.service.QuestionService;
-import com.capgemini.service.TestService;
-import com.capgemini.service.UserService;
+import com.capgemin.service.CalculateMarks;
+import com.capgemin.service.QuestionService;
+import com.capgemin.service.TestService;
+import com.capgemin.service.UserService;
 
 @RestController
 public class Controller {
@@ -35,7 +35,7 @@ public class Controller {
 	@Autowired
 	UserService userService;
 	@Autowired
-	TestService testService;
+	com.capgemin.service.TestService testService;
 	@Autowired
 	CalculateMarks calculate;
 
@@ -98,6 +98,22 @@ public class Controller {
 	public List<Question> viewAll() {
 		return quesService.viewAll();
 	}
+	@PostMapping("/getResult")
+	public int getResult(@RequestBody Test test) {
+	   
+		return calculate.getResults(test);
+	}
+	@GetMapping("/viewTest/{id}")
+	public Test viewTestById(@PathVariable(value="id") int testId)
+	{
+		Optional<Test> tst=testService.findById(testId);
+		return tst.get();
+	}
+	@PutMapping("/updateQuestion/{id}")
+	public String updateQuestion(@PathVariable(value = "id")int qId,@RequestBody Question question) {
+		return quesService.updateQuestion(qId, question);
+		
+	}	
 	
 	
 }
