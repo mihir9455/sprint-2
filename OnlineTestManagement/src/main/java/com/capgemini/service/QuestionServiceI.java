@@ -1,4 +1,4 @@
-package com.capgemin.service;
+package com.capgemini.service;
 
 import java.util.List;
 import java.util.Optional;
