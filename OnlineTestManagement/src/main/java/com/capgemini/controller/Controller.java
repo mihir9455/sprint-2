@@ -18,10 +18,10 @@ import com.capgemini.dao.TestDao;
 import com.capgemini.entity.Question;
 import com.capgemini.entity.Test;
 import com.capgemini.entity.UserTest;
-import com.capgemin.service.CalculateMarks;
-import com.capgemin.service.QuestionService;
-import com.capgemin.service.TestService;
-import com.capgemin.service.UserService;
+import com.capgemini.service.CalculateMarks;
+import com.capgemini.service.QuestionService;
+import com.capgemini.service.TestService;
+import com.capgemini.service.UserService;
 
 @RestController
 public class Controller {
@@ -35,7 +35,7 @@ public class Controller {
 	@Autowired
 	UserService userService;
 	@Autowired
-	com.capgemin.service.TestService testService;
+	com.capgemini.service.TestService testService;
 	@Autowired
 	CalculateMarks calculate;
 
