@@ -115,6 +115,12 @@ public class Controller {
 		
 	}	
 	
+	@PostMapping("/assignTest/{id}/{id1}")
+	public String assignTest(@PathVariable(value= "id") int userId,@PathVariable(value= "id1") int testId )
+	{
+		 return userService.assignTest(userId, testId);
+	}
+
 	
 }
 
