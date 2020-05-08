@@ -2,5 +2,5 @@ package com.capgemini.service;
 
 public interface LoginServiceI {
 
-	public String login(int id, String password);
+	public String login(String email, String password);
 }
