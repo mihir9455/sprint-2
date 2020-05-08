@@ -3,8 +3,17 @@ package com.capgemini.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.xml.ws.Response;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,118 +21,161 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-//import com.capgemini.dao.AnswerDao;
-import com.capgemini.dao.QuestionDao;
-import com.capgemini.dao.TestDao;
 import com.capgemini.entity.Question;
 import com.capgemini.entity.Test;
-import com.capgemini.entity.UserTest;
+import com.capgemini.entity.User;
+import com.capgemini.exception.EntityAlreadyExists;
+import com.capgemini.exception.EntityNotFoundException;
 import com.capgemini.service.CalculateMarks;
 import com.capgemini.service.QuestionService;
 import com.capgemini.service.TestService;
 import com.capgemini.service.UserService;
 
 @RestController
+@CrossOrigin("*")
 public class Controller {
 
 	@Autowired
 	QuestionService quesService;
-	@Autowired
-	TestDao tdao;
-//	@Autowired
-//	AnswerDao adao;
+
 	@Autowired
 	UserService userService;
 	@Autowired
-	com.capgemini.service.TestService testService;
+	TestService testService;
 	@Autowired
 	CalculateMarks calculate;
 
+	Logger logger = LoggerFactory.getLogger(Controller.class);
+
+	@ExceptionHandler(EntityNotFoundException.class)
 	@PostMapping("/addUser")
-	public String addUser(@RequestBody UserTest usr)
-	{	
-			
-			return userService.addUser(usr); 
+	public ResponseEntity<?> addUser(@Validated @RequestBody User usr) {
+		try {
+			userService.addUser(usr);
+			return new ResponseEntity<String>("User Added", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
+		}
 	}
-	
-	@DeleteMapping("/deleteUser/{id}")
-	public String removeUser(@PathVariable(value="id") int id) {
-		
-		return userService.deleteUser(id);
-	}
-	@PutMapping("/updateUser/{id}")
-	public String updateUser(@PathVariable(value = "id") int id,@RequestBody UserTest user) {
-		return userService.updateUser(id, user);
-	}
-	
-	@GetMapping("/viewUsers")
-	public List<UserTest> viewAllUser() {
-		return userService.viewAll();
-	}
-	
-	@PostMapping("/addTest")
-	public Test addTest(@RequestBody Test test) {
-		
-		return testService.addTest(test);
-	}
-	
-	@DeleteMapping("/deleteTest/{id}")
-	public String deleteTest(@PathVariable(value="id") int testId) {
-		return testService.deleteTest(testId);
-	}
-	
-	@PutMapping("/updateTest/{id}")
-	public String updateTest(@PathVariable(value = "id")int testId,@RequestBody Test test) {
-		return testService.updateTest(testId, test);
-		
-	}
-	
-	@PostMapping("/addQuestion/{id}")
-	public String addQuestion(@PathVariable(value = "id")int testId,@RequestBody Question question) {
-		Optional<Question> q = quesService.findById(question.getQuestionId());
-		if (!q.isPresent()) {
-			quesService.addQuestion(testId,question);
-			return "question added";
-		} 
-		return "question already exists";
+
+	@DeleteMapping("/deleteUser/{email}")
+	public ResponseEntity<?> removeUser(@PathVariable(value = "email") String email) {
+		try {
+			userService.deleteUser(email);
+			return new ResponseEntity<String>("User deleted", HttpStatus.OK);
+
+		} catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
 
 	}
-	
+
+	@PutMapping("/updateUser/{email}")
+	public ResponseEntity<?> updateUser(@PathVariable(value = "email") String email, @Validated @RequestBody User user) {
+		try {
+			userService.updateUser(email, user);
+			return new ResponseEntity<String>("User updated", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+
+	}
+
+	@GetMapping("/viewUsers")
+	public List<User> viewAllUser() {
+		return userService.viewAll();
+	}
+
+	@PostMapping("/addQuestion/{id}")
+	public ResponseEntity<?> addQuestion(@PathVariable(value = "id") int testId,
+			@Validated @RequestBody Question question) {
+		try {
+			quesService.addQuestion(testId, question);
+			return new ResponseEntity<String>("Question Added", HttpStatus.OK);
+
+		} catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
+		}
+
+	}
+
+	@PutMapping("/updateQuestion/{id}")
+	public ResponseEntity<?> updateQuestion(@PathVariable(value = "id") int qId,
+			@Validated @RequestBody Question question) {
+		try {
+			quesService.updateQuestion(qId, question);
+			return new ResponseEntity<String>("Question updated", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+
+		}
+
+	}
+
 	@DeleteMapping("/deleteQuestion/{id}")
-	public String deleteQuestion(@PathVariable(value = "id")int qId) {
-		return quesService.deleteQuestion(qId);
-	} 
-	
-	@GetMapping("/view")
+	public ResponseEntity<?> deleteQuestion(@PathVariable(value = "id") int qId) {
+		try {
+			quesService.deleteQuestion(qId);
+			return new ResponseEntity<String>("Question deleted", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+
+	}
+
+	@GetMapping("/viewQuestions")
 	public List<Question> viewAll() {
 		return quesService.viewAll();
 	}
+
+	@PostMapping("/addTest")
+	public ResponseEntity<?> addTest(@RequestBody Test test) {
+		try {
+			testService.addTest(test);
+			return new ResponseEntity<String>("Test Added", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
+		}
+
+	}
+
+	@GetMapping("/viewTests")
+	public List<Test> viewAllTest() {
+		return testService.viewAll();
+	}
+
+	@DeleteMapping("/deleteTest/{id}")
+	public ResponseEntity<?> deleteTest(@PathVariable(value = "id") int testId) {
+		try {
+			testService.deleteTest(testId);
+			return new ResponseEntity<String>("Test deleted", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+
+	}
+
+	@PutMapping("/updateTest/{id}")
+	public ResponseEntity<?> updateTest(@PathVariable(value = "id") int testId, @RequestBody Test test) {
+		try {
+			testService.updateTest(testId, test);
+			return new ResponseEntity<String>("Question updated", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+
+		}
+
+	}
+
 	@PostMapping("/getResult")
 	public int getResult(@RequestBody Test test) {
-	   
+		System.out.println(test.getTestId() + "/////////////////////////////////////////////////");
 		return calculate.getResults(test);
 	}
-	@GetMapping("/viewTest/{id}")
-	public Test viewTestById(@PathVariable(value="id") int testId)
-	{
-		Optional<Test> tst=testService.findById(testId);
-		return tst.get();
-	}
-	@PutMapping("/updateQuestion/{id}")
-	public String updateQuestion(@PathVariable(value = "id")int qId,@RequestBody Question question) {
-		return quesService.updateQuestion(qId, question);
-		
-	}	
-	
-	@PostMapping("/assignTest/{id}/{id1}")
-	public String assignTest(@PathVariable(value= "id") int userId,@PathVariable(value= "id1") int testId )
-	{
-		 return userService.assignTest(userId, testId);
+
+	@PostMapping("/assignTest/{email}/{id}")
+	public String assignTest(@PathVariable(value = "email") String email, @PathVariable(value = "id") int testId) {
+		return userService.assignTest(email, testId);
 	}
 
-	
 }
-
-	
-
-	

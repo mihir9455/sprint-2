@@ -12,8 +12,8 @@ public class LoginController {
 	
 	@Autowired
 	LoginService loginservice;
-	@RequestMapping("/login/{id}/{pass}")
-	public String login(@PathVariable(value = "id") int id, @PathVariable(value = "pass") String password){
-		return loginservice.login(id, password);
+	@RequestMapping("/login/{email}/{pass}")
+	public String login(@PathVariable(value = "email") String email, @PathVariable(value = "pass") String password){
+		return loginservice.login(email, password);
 	}
 }

@@ -5,54 +5,55 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import com.capgemini.dao.TestDao;
 import com.capgemini.entity.Test;
+import com.capgemini.exception.EntityNotFoundException;
 
 @Service
 public class TestService implements TestServiceI {
-   
+
 	@Autowired
 	TestDao dao;
-	
+
 	@Override
-	public Test addTest(Test test) {
-		// TODO Auto-generated method stub
+	public Test addTest(@Validated Test test) {
+
 		return dao.save(test);
 	}
 
 	@Override
 	public String deleteTest(int testId) {
-		// TODO Auto-generated method stub
-		
-		Optional<Test> findById=dao.findById(testId);
-		if(findById.isPresent()) {
+
+		Optional<Test> findById = dao.findById(testId);
+		if (findById.isPresent()) {
 			dao.deleteById(testId);
 			return "Test deleted";
+		} else {
+			throw new EntityNotFoundException("No test found with test id" + testId);
 		}
-		return "Test does not exist";
+
 	}
-	
 
 	@Override
-	public String updateTest(int testId,Test test) {
+	public String updateTest(int testId, @Validated Test test) {
 		// TODO Auto-generated method stub
-		Optional<Test> tst=dao.findById(testId);
-		if(tst.isPresent())
-		{
-			Test t=tst.get();
+		Optional<Test> tst = dao.findById(testId);
+		if (tst.isPresent()) {
+			Test t = tst.get();
 			t.setStartDate(test.getStartDate());
 			t.setEndDate(test.getEndDate());
 			t.setTestDuration(test.getTestDuration());
-			//t.setTestQuestions(test.getTestQuestions());
+			// t.setTestQuestions(test.getTestQuestions());
 			t.setTestTitle(test.getTestTitle());
 			t.setTestTotalMarks(test.getTestTotalMarks());
 			dao.save(t);
 			return "Test Updated";
+		} else {
+			throw new EntityNotFoundException("No test found with test id" + testId);
 		}
-		else
-			return "Test Does not exist";
-		
+
 	}
 
 	@Override
@@ -63,8 +64,14 @@ public class TestService implements TestServiceI {
 
 	@Override
 	public Optional<Test> findById(int id) {
-		
-		return dao.findById(id);
+
+		Optional<Test> findById = dao.findById(id);
+		if (findById.isPresent()) {
+			return findById;
+		} else {
+			throw new EntityNotFoundException("No test found with test id" + id);
+		}
+
 	}
 
 }
