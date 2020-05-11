@@ -177,6 +177,11 @@ public class Controller {
 		}
 
 	}
+	
+	@GetMapping("/viewTestById/{id}")
+	Optional<Test> findById(@PathVariable(value="id") int testId){
+		return testService.findById(testId);
+	}
 
 	@PostMapping("/getResult")
 	public int getResult(@RequestBody Test test) {
