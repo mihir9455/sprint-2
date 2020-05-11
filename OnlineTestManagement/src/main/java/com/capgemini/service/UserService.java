@@ -86,5 +86,17 @@ public class UserService implements UserServiceI {
 		}
 		return "User or Test does not exist";
 	}
+  
+	@Override
+	public User findUserByEmail(String email) {
+		long userId=dao.getIdByEmail(email);
+		Optional<User> findById=dao.findById(userId);
+		if(findById.isPresent()) {
+			return findById.get();
+		}
+		else {
+			throw new EntityNotFoundException("User not found");
+		}
 
+	}
 }
