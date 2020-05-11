@@ -3,7 +3,7 @@ package com.capgemini.controller;
 import java.util.List;
 import java.util.Optional;
 
-import javax.xml.ws.Response;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,6 +80,11 @@ public class Controller {
 		}
 
 	}
+	
+	@GetMapping("/viewUser/{email}")
+	public User viewUserByEmail(@PathVariable(value="email") String email) {
+		return userService.findUserByEmail(email);
+	}
 
 	@GetMapping("/viewUsers")
 	public List<User> viewAllUser() {
@@ -121,6 +126,12 @@ public class Controller {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 
+	}
+	
+	@GetMapping("/getQuestion/{id}")
+	public Question getQuestion(@PathVariable(value = "id")int qId) {
+		Optional<Question> question=quesService.findById(qId);
+		return question.get();
 	}
 
 	@GetMapping("/viewQuestions")

@@ -12,4 +12,5 @@ public interface UserServiceI {
 	public List<User> viewAll();
 	public Optional<User> findById(long userId);
 	public String assignTest(String email, int testId);
+	public User findUserByEmail(String email);
 }
