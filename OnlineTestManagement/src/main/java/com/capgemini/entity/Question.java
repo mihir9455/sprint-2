@@ -14,15 +14,15 @@ import javax.validation.constraints.NotBlank;
 @Table(name="Question")
 public class Question {
 	@Id
-	@NotBlank(message = "Question id can not be blank")
+	
 	private Integer questionId;
-	@NotBlank(message = "Question title can not be blank")
+	
 	private String questionTitle;
-	@NotBlank(message = "Question answer can not be blank")
+	
 	private int questionAnswer;
-	@NotBlank(message = "Question marks can not be blank")
+	
 	private int questionMarks;
-	@NotBlank(message = "Chosen answer can not be blank")
+	
 	private int chosenAnswer;
 	private int marksScored;
 	@OneToMany(targetEntity = Answer.class,cascade= CascadeType.ALL)

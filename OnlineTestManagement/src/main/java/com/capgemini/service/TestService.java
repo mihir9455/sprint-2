@@ -31,7 +31,7 @@ public class TestService implements TestServiceI {
 			dao.deleteById(testId);
 			return "Test deleted";
 		} else {
-			throw new EntityNotFoundException("No test found with test id" + testId);
+			throw new EntityNotFoundException("No test found with test id " + testId);
 		}
 
 	}
@@ -42,8 +42,8 @@ public class TestService implements TestServiceI {
 		Optional<Test> tst = dao.findById(testId);
 		if (tst.isPresent()) {
 			Test t = tst.get();
-			t.setStartDate(test.getStartDate());
-			t.setEndDate(test.getEndDate());
+			t.setStartTime(test.getStartTime());
+			t.setEndTime(test.getEndTime());
 			t.setTestDuration(test.getTestDuration());
 			// t.setTestQuestions(test.getTestQuestions());
 			t.setTestTitle(test.getTestTitle());
@@ -51,7 +51,7 @@ public class TestService implements TestServiceI {
 			dao.save(t);
 			return "Test Updated";
 		} else {
-			throw new EntityNotFoundException("No test found with test id" + testId);
+			throw new EntityNotFoundException("No test found with test id " + testId);
 		}
 
 	}
@@ -69,7 +69,7 @@ public class TestService implements TestServiceI {
 		if (findById.isPresent()) {
 			return findById;
 		} else {
-			throw new EntityNotFoundException("No test found with test id" + id);
+			throw new EntityNotFoundException("No test found with test id " + id);
 		}
 
 	}
