@@ -17,15 +17,19 @@ public class LoginService implements LoginServiceI {
 	@Override
 	public String login(String email,String password){
 		long id=userDao.getIdByEmail(email);
-		Optional<User> userTest =  userDao.findById(id);
-		if(userTest.isPresent()) {
-			User user = userTest.get();
+		Optional<User> findById =  userDao.findById(id);
+		if(findById.isPresent()) {
+			User user = findById.get();
 			if(user.getUserPassword().equals(password)) {
-				if(user.getIsAdmin().equals("true")) return "The user is admin";
-				else return "The user is Not Admin";
+				if(user.getIsAdmin().equals("True")){
+					return "Admin";
+					}
+				else { 
+					return "User";
+				}
 			}
-			return "The Password is not Correct !!";
+			return "Incorrect Password";
 		}
-		return "The User is Not Present !!" ;
+		return "The User is Not Present" ;
 	}
 }
