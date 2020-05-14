@@ -24,8 +24,11 @@ public class UserService implements UserServiceI {
 
 	@Override
 	public String addUser(User user) {
-		dao.save(user);
-		return "User Created!!";
+			dao.save(user);
+			return "User Created!!";
+		
+		
+		
 	}
 
 	@Override
@@ -48,7 +51,6 @@ public class UserService implements UserServiceI {
 		if (findById.isPresent()) {
 			User usr = findById.get();
 			usr.setUserName(userDetails.getUserName());
-			usr.setEmail(userDetails.getEmail());
 			usr.setUserPassword(userDetails.getUserPassword());
 			dao.save(usr);
 			return "User Updated";

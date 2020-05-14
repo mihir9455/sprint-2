@@ -26,6 +26,7 @@ public class QuestionService implements QuestionServiceI {
 		Optional<Test> findById = testDao.findById(testId);
 		if (findById.isPresent()) {
 			Test test=findById.get();
+			test.setTestTotalMarks(test.getTestTotalMarks()+question.getQuestionMarks());
 			List<Question> ques = test.getTestQuestions();
 			ques.add(question);
 			test.setTestQuestions(ques);
@@ -33,7 +34,7 @@ public class QuestionService implements QuestionServiceI {
 			return "question added";
 		}
 		else {
-			throw new EntityAlreadyExists("Question Not Added");
+			throw new EntityNotFoundException("Test Not Found and Question Not Added");
 		}
 
 	}
