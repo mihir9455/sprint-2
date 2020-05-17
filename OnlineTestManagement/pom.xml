@@ -25,7 +25,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
-			</dependency>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
@@ -80,15 +80,7 @@
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-jasper</artifactId>
 		</dependency>
-		<dependency>
 
-			<groupId>com.oracle</groupId>
-
-			<artifactId>ojdbc7</artifactId>
-
-			<version>12.1.0.2</version>
-
-		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

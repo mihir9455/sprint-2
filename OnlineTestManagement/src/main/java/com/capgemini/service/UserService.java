@@ -15,6 +15,11 @@ import com.capgemini.exception.EntityAlreadyExists;
 import com.capgemini.exception.EntityNotFoundException;
 
 @Service
+/**
+ * 
+ * @author mahir
+ *
+ */
 public class UserService implements UserServiceI {
 
 	@Autowired
@@ -23,9 +28,12 @@ public class UserService implements UserServiceI {
 	TestDao tdao;
 
 	@Override
+	/**
+	 * to add new user
+	 */
 	public String addUser(User user) {
 		Long id = dao.getIdByEmail(user.getEmail());
-		if(id!=null)
+		if (id != null)
 			throw new EntityAlreadyExists("Email already present");
 		dao.save(user);
 		return "User Created!!";
@@ -33,6 +41,9 @@ public class UserService implements UserServiceI {
 	}
 
 	@Override
+	/**
+	 * for deleting an user
+	 */
 	public String deleteUser(String email) {
 		long userId = dao.getIdByEmail(email);
 		Optional<User> findById = dao.findById(userId);
@@ -46,6 +57,9 @@ public class UserService implements UserServiceI {
 	}
 
 	@Override
+	/**
+	 * to update user by his/her email
+	 */
 	public String updateUser(String email, User userDetails) {
 		Long userId = dao.getIdByEmail(email);
 		Optional<User> findById = dao.findById(userId);
@@ -61,6 +75,9 @@ public class UserService implements UserServiceI {
 	}
 
 	@Override
+	/**
+	 * to see all users except admin
+	 */
 	public List<User> viewAll() {
 		List<User> returnUsers = new ArrayList<User>();
 		List<User> userList = dao.findAll();
@@ -73,6 +90,9 @@ public class UserService implements UserServiceI {
 	}
 
 	@Override
+	/**
+	 * to find user by id
+	 */
 	public Optional<User> findById(long userId) {
 		Optional<User> findById = dao.findById(userId);
 		if (findById.isPresent()) {
@@ -83,6 +103,9 @@ public class UserService implements UserServiceI {
 	}
 
 	@Override
+	/**
+	 * to assign test to user
+	 */
 	public String assignTest(String email, int testId) {
 		Long userId = dao.getIdByEmail(email);
 		Optional<User> findById = dao.findById(userId);
@@ -92,14 +115,16 @@ public class UserService implements UserServiceI {
 			usr.setTestId(testId);
 			dao.save(usr);
 			return "Test Assigned to user";
-		}
-		else {
+		} else {
 			throw new EntityNotFoundException("User or Test does not exist");
 		}
-		
+
 	}
 
 	@Override
+	/**
+	 * to find user ny email
+	 */
 	public User findUserByEmail(String email) {
 		Long userId = dao.getIdByEmail(email);
 		Optional<User> findById = dao.findById(userId);

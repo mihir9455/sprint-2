@@ -3,8 +3,6 @@ package com.capgemini.controller;
 import java.util.List;
 import java.util.Optional;
 
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +23,6 @@ import com.capgemini.entity.Question;
 import com.capgemini.entity.Test;
 import com.capgemini.entity.User;
 import com.capgemini.exception.EntityAlreadyExists;
-import com.capgemini.exception.EntityNotFoundException;
 import com.capgemini.service.CalculateMarks;
 import com.capgemini.service.QuestionService;
 import com.capgemini.service.TestService;
@@ -58,7 +55,7 @@ public class Controller {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
 		}
 	}
-	
+
 	@DeleteMapping("/deleteUser/{email}")
 	public ResponseEntity<?> removeUser(@PathVariable(value = "email") String email) {
 		try {
@@ -72,7 +69,8 @@ public class Controller {
 	}
 
 	@PutMapping("/updateUser/{email}")
-	public ResponseEntity<?> updateUser(@PathVariable(value = "email") String email, @Validated @RequestBody User user) {
+	public ResponseEntity<?> updateUser(@PathVariable(value = "email") String email,
+			@Validated @RequestBody User user) {
 		try {
 			userService.updateUser(email, user);
 			return new ResponseEntity<String>("User updated", HttpStatus.OK);
@@ -81,9 +79,9 @@ public class Controller {
 		}
 
 	}
-	
+
 	@GetMapping("/viewUser/{email}")
-	public User viewUserByEmail(@PathVariable(value="email") String email) {
+	public User viewUserByEmail(@PathVariable(value = "email") String email) {
 		return userService.findUserByEmail(email);
 	}
 
@@ -128,10 +126,10 @@ public class Controller {
 		}
 
 	}
-	
+
 	@GetMapping("/getQuestion/{id}")
-	public Question getQuestion(@PathVariable(value = "id")int qId) {
-		Optional<Question> question=quesService.findById(qId);
+	public Question getQuestion(@PathVariable(value = "id") int qId) {
+		Optional<Question> question = quesService.findById(qId);
 		return question.get();
 	}
 
@@ -178,9 +176,9 @@ public class Controller {
 		}
 
 	}
-	
+
 	@GetMapping("/viewTestById/{id}")
-	Optional<Test> findById(@PathVariable(value="id") int testId){
+	Optional<Test> findById(@PathVariable(value = "id") int testId) {
 		return testService.findById(testId);
 	}
 
@@ -190,15 +188,15 @@ public class Controller {
 	}
 
 	@PostMapping("/assignTest/{email}/{id}")
-	public ResponseEntity<?> assignTest(@PathVariable(value = "email") String email, @PathVariable(value = "id") int testId) {
+	public ResponseEntity<?> assignTest(@PathVariable(value = "email") String email,
+			@PathVariable(value = "id") int testId) {
 		try {
 			userService.assignTest(email, testId);
-			return new ResponseEntity<String>("Test Assigned",HttpStatus.OK);
+			return new ResponseEntity<String>("Test Assigned", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
-		catch(Exception e){
-			return new ResponseEntity<String>(e.getMessage(),HttpStatus.NOT_FOUND);
-		}
-		
+
 	}
 
 }
