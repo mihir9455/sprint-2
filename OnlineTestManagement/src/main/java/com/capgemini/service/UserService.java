@@ -22,16 +22,22 @@ public class UserService implements UserServiceI {
 	@Autowired
 	TestDao tdao;
 
+	/*
+	 * Add user into database
+	 */
 	@Override
 	public String addUser(User user) {
 		Long id = dao.getIdByEmail(user.getEmail());
-		if(id!=null)
+		if (id != null)
 			throw new EntityAlreadyExists("Email already present");
 		dao.save(user);
 		return "User Created!!";
 
 	}
 
+	/*
+	 * Deletes User from database
+	 */
 	@Override
 	public String deleteUser(String email) {
 		long userId = dao.getIdByEmail(email);
@@ -45,11 +51,14 @@ public class UserService implements UserServiceI {
 
 	}
 
+	/*
+	 * Update User Details
+	 */
 	@Override
 	public String updateUser(String email, User userDetails) {
 		Long userId = dao.getIdByEmail(email);
-		Optional<User> findById = dao.findById(userId);
-		if (findById.isPresent()) {
+		if (userId != null) {
+			Optional<User> findById = dao.findById(userId);
 			User usr = findById.get();
 			usr.setUserName(userDetails.getUserName());
 			usr.setUserPassword(userDetails.getUserPassword());
@@ -60,6 +69,9 @@ public class UserService implements UserServiceI {
 		}
 	}
 
+	/*
+	 * Gives list Of all Users
+	 */
 	@Override
 	public List<User> viewAll() {
 		List<User> returnUsers = new ArrayList<User>();
@@ -72,6 +84,9 @@ public class UserService implements UserServiceI {
 		return returnUsers;
 	}
 
+	/*
+	 * Finds user Object by Id
+	 */
 	@Override
 	public Optional<User> findById(long userId) {
 		Optional<User> findById = dao.findById(userId);
@@ -82,6 +97,9 @@ public class UserService implements UserServiceI {
 		}
 	}
 
+	/*
+	 * Assigns Test To User
+	 */
 	@Override
 	public String assignTest(String email, int testId) {
 		Long userId = dao.getIdByEmail(email);
@@ -92,13 +110,15 @@ public class UserService implements UserServiceI {
 			usr.setTestId(testId);
 			dao.save(usr);
 			return "Test Assigned to user";
-		}
-		else {
+		} else {
 			throw new EntityNotFoundException("User or Test does not exist");
 		}
-		
+
 	}
 
+	/*
+	 * Finds User Object By Email
+	 */
 	@Override
 	public User findUserByEmail(String email) {
 		Long userId = dao.getIdByEmail(email);
