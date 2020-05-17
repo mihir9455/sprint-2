@@ -71,11 +71,12 @@ public class User {
 		this.userPassword = userPassword;
 	}
 
-	public User(String userName, int testId, String isAdmin, String userPassword) {
+	public User(String userName, int testId, String isAdmin,String email, String userPassword) {
 
 		this.userName = userName;
 		this.testId = testId;
 		this.isAdmin = isAdmin;
+		this.email=email;
 		this.userPassword = userPassword;
 	}
 

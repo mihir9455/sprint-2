@@ -47,17 +47,18 @@ public class Controller {
 
 	Logger logger = LoggerFactory.getLogger(Controller.class);
 
-	@ExceptionHandler(EntityNotFoundException.class)
+	@ExceptionHandler(EntityAlreadyExists.class)
 	@PostMapping("/addUser")
 	public ResponseEntity<?> addUser(@Validated @RequestBody User usr) {
 		try {
 			userService.addUser(usr);
 			return new ResponseEntity<String>("User Added", HttpStatus.OK);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
 		}
 	}
-
+	
 	@DeleteMapping("/deleteUser/{email}")
 	public ResponseEntity<?> removeUser(@PathVariable(value = "email") String email) {
 		try {
@@ -185,13 +186,19 @@ public class Controller {
 
 	@PostMapping("/getResult")
 	public int getResult(@RequestBody Test test) {
-		System.out.println(test.getTestId() + "/////////////////////////////////////////////////");
 		return calculate.getResults(test);
 	}
 
 	@PostMapping("/assignTest/{email}/{id}")
-	public String assignTest(@PathVariable(value = "email") String email, @PathVariable(value = "id") int testId) {
-		return userService.assignTest(email, testId);
+	public ResponseEntity<?> assignTest(@PathVariable(value = "email") String email, @PathVariable(value = "id") int testId) {
+		try {
+			userService.assignTest(email, testId);
+			return new ResponseEntity<String>("Test Assigned",HttpStatus.OK);
+		}
+		catch(Exception e){
+			return new ResponseEntity<String>(e.getMessage(),HttpStatus.NOT_FOUND);
+		}
+		
 	}
 
 }

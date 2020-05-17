@@ -1,11 +1,11 @@
 package com.capgemini.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 import com.capgemini.dao.TestDao;
 import com.capgemini.dao.UserDao;
@@ -24,11 +24,12 @@ public class UserService implements UserServiceI {
 
 	@Override
 	public String addUser(User user) {
-			dao.save(user);
-			return "User Created!!";
-		
-		
-		
+		Long id = dao.getIdByEmail(user.getEmail());
+		if(id!=null)
+			throw new EntityAlreadyExists("Email already present");
+		dao.save(user);
+		return "User Created!!";
+
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class UserService implements UserServiceI {
 
 	@Override
 	public String updateUser(String email, User userDetails) {
-		long userId = dao.getIdByEmail(email);
+		Long userId = dao.getIdByEmail(email);
 		Optional<User> findById = dao.findById(userId);
 		if (findById.isPresent()) {
 			User usr = findById.get();
@@ -61,8 +62,14 @@ public class UserService implements UserServiceI {
 
 	@Override
 	public List<User> viewAll() {
-
-		return dao.findAll();
+		List<User> returnUsers = new ArrayList<User>();
+		List<User> userList = dao.findAll();
+		for (User user : userList) {
+			if (!(user.getIsAdmin().equals("True"))) {
+				returnUsers.add(user);
+			}
+		}
+		return returnUsers;
 	}
 
 	@Override
@@ -77,7 +84,7 @@ public class UserService implements UserServiceI {
 
 	@Override
 	public String assignTest(String email, int testId) {
-		long userId = dao.getIdByEmail(email);
+		Long userId = dao.getIdByEmail(email);
 		Optional<User> findById = dao.findById(userId);
 		Optional<Test> test = tdao.findById(testId);
 		if (findById.isPresent() && test.isPresent()) {
@@ -86,17 +93,19 @@ public class UserService implements UserServiceI {
 			dao.save(usr);
 			return "Test Assigned to user";
 		}
-		return "User or Test does not exist";
+		else {
+			throw new EntityNotFoundException("User or Test does not exist");
+		}
+		
 	}
-  
+
 	@Override
 	public User findUserByEmail(String email) {
-		long userId=dao.getIdByEmail(email);
-		Optional<User> findById=dao.findById(userId);
-		if(findById.isPresent()) {
+		Long userId = dao.getIdByEmail(email);
+		Optional<User> findById = dao.findById(userId);
+		if (findById.isPresent()) {
 			return findById.get();
-		}
-		else {
+		} else {
 			throw new EntityNotFoundException("User not found");
 		}
 
