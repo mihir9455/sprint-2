@@ -14,6 +14,11 @@ import com.capgemini.exception.EntityAlreadyExists;
 import com.capgemini.exception.EntityNotFoundException;
 
 @Service
+/**
+ * 
+ * service for Question
+ *
+ */
 public class QuestionService implements QuestionServiceI {
 	@Autowired
 	QuestionDao dao;
@@ -22,24 +27,29 @@ public class QuestionService implements QuestionServiceI {
 	TestDao testDao;
 
 	@Override
+	/*
+	 * method to add questions
+	 */
 	public String addQuestion(int testId, Question question) {
 		Optional<Test> findById = testDao.findById(testId);
 		if (findById.isPresent()) {
-			Test test=findById.get();
-			test.setTestTotalMarks(test.getTestTotalMarks()+question.getQuestionMarks());
+			Test test = findById.get();
+			test.setTestTotalMarks(test.getTestTotalMarks() + question.getQuestionMarks());
 			List<Question> ques = test.getTestQuestions();
 			ques.add(question);
 			test.setTestQuestions(ques);
 			testDao.save(test);
 			return "question added";
-		}
-		else {
+		} else {
 			throw new EntityNotFoundException("Test Not Found and Question Not Added");
 		}
 
 	}
 
 	@Override
+	/**
+	 * method to delete question
+	 */
 	public String deleteQuestion(int questionId) {
 		Optional<Question> findById = dao.findById(questionId);
 		if (findById.isPresent()) {
@@ -51,6 +61,10 @@ public class QuestionService implements QuestionServiceI {
 	}
 
 	@Override
+	/**
+	 * method to update question
+	 * 
+	 */
 	public String updateQuestion(int questionId, Question ques) {
 
 		Optional<Question> findById = dao.findById(questionId);
@@ -69,6 +83,10 @@ public class QuestionService implements QuestionServiceI {
 	}
 
 	@Override
+	/**
+	 * to view allquestion
+	 */
+
 	public List<Question> viewAll() {
 
 		System.out.println(dao.findAll());
@@ -76,6 +94,9 @@ public class QuestionService implements QuestionServiceI {
 	}
 
 	@Override
+	/**
+	 * to find question by id
+	 */
 	public Optional<Question> findById(int id) {
 
 		Optional<Question> findById = dao.findById(id);

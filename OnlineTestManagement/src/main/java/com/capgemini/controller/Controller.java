@@ -23,7 +23,6 @@ import com.capgemini.entity.Question;
 import com.capgemini.entity.Test;
 import com.capgemini.entity.User;
 import com.capgemini.exception.EntityAlreadyExists;
-import com.capgemini.exception.EntityNotFoundException;
 import com.capgemini.service.CalculateMarks;
 import com.capgemini.service.QuestionService;
 import com.capgemini.service.TestService;
