@@ -13,11 +13,21 @@ import com.capgemini.service.LoginService;
 
 @RestController
 @CrossOrigin("*")
+/**
+ * 
+ * Rest Controller for Login
+ *
+ */
 public class LoginController {
 
 	@Autowired
 	LoginService loginservice;
 
+	/**
+	 *
+	 * @param user
+	 * @return
+	 */
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody User user) {
 		String s = loginservice.login(user.getEmail(), user.getUserPassword());

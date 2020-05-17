@@ -30,6 +30,11 @@ import com.capgemini.service.UserService;
 
 @RestController
 @CrossOrigin("*")
+/**
+ * 
+ * Rest controller class
+ *
+ */
 public class Controller {
 
 	@Autowired
@@ -44,6 +49,11 @@ public class Controller {
 
 	Logger logger = LoggerFactory.getLogger(Controller.class);
 
+	/**
+	 * 
+	 * @param usr
+	 * @return
+	 */
 	@ExceptionHandler(EntityAlreadyExists.class)
 	@PostMapping("/addUser")
 	public ResponseEntity<?> addUser(@Validated @RequestBody User usr) {
@@ -55,6 +65,11 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * 
+	 * @param email
+	 * @return
+	 */
 	@DeleteMapping("/deleteUser/{email}")
 	public ResponseEntity<?> removeUser(@PathVariable(value = "email") String email) {
 		try {
@@ -67,6 +82,12 @@ public class Controller {
 
 	}
 
+	/**
+	 * 
+	 * @param email
+	 * @param user
+	 * @return
+	 */
 	@PutMapping("/updateUser/{email}")
 	public ResponseEntity<?> updateUser(@PathVariable(value = "email") String email,
 			@Validated @RequestBody User user) {
@@ -79,16 +100,31 @@ public class Controller {
 
 	}
 
+	/**
+	 * 
+	 * @param email
+	 * @return
+	 */
 	@GetMapping("/viewUser/{email}")
 	public User viewUserByEmail(@PathVariable(value = "email") String email) {
 		return userService.findUserByEmail(email);
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@GetMapping("/viewUsers")
 	public List<User> viewAllUser() {
 		return userService.viewAll();
 	}
 
+	/**
+	 * 
+	 * @param testId
+	 * @param question
+	 * @return
+	 */
 	@PostMapping("/addQuestion/{id}")
 	public ResponseEntity<?> addQuestion(@PathVariable(value = "id") int testId,
 			@Validated @RequestBody Question question) {
@@ -102,6 +138,12 @@ public class Controller {
 
 	}
 
+	/**
+	 * 
+	 * @param qId
+	 * @param question
+	 * @return
+	 */
 	@PutMapping("/updateQuestion/{id}")
 	public ResponseEntity<?> updateQuestion(@PathVariable(value = "id") int qId,
 			@Validated @RequestBody Question question) {
@@ -115,6 +157,12 @@ public class Controller {
 
 	}
 
+	/**
+	 * 
+	 * @param qId
+	 * @return
+	 */
+
 	@DeleteMapping("/deleteQuestion/{id}")
 	public ResponseEntity<?> deleteQuestion(@PathVariable(value = "id") int qId) {
 		try {
@@ -126,16 +174,31 @@ public class Controller {
 
 	}
 
+	/**
+	 * 
+	 * @param qId
+	 * @return
+	 */
 	@GetMapping("/getQuestion/{id}")
 	public Question getQuestion(@PathVariable(value = "id") int qId) {
 		Optional<Question> question = quesService.findById(qId);
 		return question.get();
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@GetMapping("/viewQuestions")
 	public List<Question> viewAll() {
 		return quesService.viewAll();
 	}
+
+	/**
+	 * 
+	 * @param test
+	 * @return
+	 */
 
 	@PostMapping("/addTest")
 	public ResponseEntity<?> addTest(@RequestBody Test test) {
@@ -148,10 +211,21 @@ public class Controller {
 
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+
 	@GetMapping("/viewTests")
 	public List<Test> viewAllTest() {
 		return testService.viewAll();
 	}
+
+	/**
+	 * 
+	 * @param testId
+	 * @return
+	 */
 
 	@DeleteMapping("/deleteTest/{id}")
 	public ResponseEntity<?> deleteTest(@PathVariable(value = "id") int testId) {
@@ -164,6 +238,12 @@ public class Controller {
 
 	}
 
+	/**
+	 * 
+	 * @param testId
+	 * @param test
+	 * @return
+	 */
 	@PutMapping("/updateTest/{id}")
 	public ResponseEntity<?> updateTest(@PathVariable(value = "id") int testId, @RequestBody Test test) {
 		try {
@@ -176,15 +256,33 @@ public class Controller {
 
 	}
 
+	/**
+	 * 
+	 * @param testId
+	 * @return
+	 */
+
 	@GetMapping("/viewTestById/{id}")
 	Optional<Test> findById(@PathVariable(value = "id") int testId) {
 		return testService.findById(testId);
 	}
 
+	/**
+	 * 
+	 * @param test
+	 * @return
+	 */
 	@PostMapping("/getResult")
 	public int getResult(@RequestBody Test test) {
 		return calculate.getResults(test);
 	}
+
+	/**
+	 * 
+	 * @param email
+	 * @param testId
+	 * @return
+	 */
 
 	@PostMapping("/assignTest/{email}/{id}")
 	public ResponseEntity<?> assignTest(@PathVariable(value = "email") String email,
