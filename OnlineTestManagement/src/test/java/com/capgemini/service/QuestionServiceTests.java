@@ -1,26 +1,20 @@
 package com.capgemini.service;
 
-import static org.hamcrest.CoreMatchers.isA;
+
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.capgemini.dao.QuestionDao;
 import com.capgemini.dao.TestDao;
@@ -28,7 +22,6 @@ import com.capgemini.entity.Question;
 import com.capgemini.service.QuestionService;
 
 @SpringBootTest
-@RunWith(SpringRunner.class)
 /**
  * 
  * question service class test

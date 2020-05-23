@@ -32,7 +32,6 @@ import ch.qos.logback.core.rolling.helper.MonoTypedConverter;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@RunWith(SpringRunner.class)
 /**
  * 
  * test service layer test

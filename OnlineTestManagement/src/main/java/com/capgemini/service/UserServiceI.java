@@ -6,7 +6,7 @@ import java.util.Optional;
 import com.capgemini.entity.User;
 
 public interface UserServiceI {
-	public String addUser(User User);
+	public User addUser(User User);
 	public String deleteUser(String email);
 	public String updateUser(String email,User userDetails);
 	public List<User> viewAll();

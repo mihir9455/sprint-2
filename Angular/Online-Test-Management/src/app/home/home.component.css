@@ -1,0 +1,20 @@
+h1{
+    text-align: center;
+    padding-top: 10%; 
+    color: #0a0a0abf;
+    margin: 0px;
+    padding-left: 40px;
+    
+}
+h5{
+    text-align: center; 
+    padding-top: 5%;
+    color: black; text-decoration: none;
+    margin: 0px;
+    padding-left: 40px;
+}
+
+div{
+    background-image: url('/assets/edu.jpg');background-position: center;background-repeat: no-repeat;
+background-size: cover;height: 593px;
+}

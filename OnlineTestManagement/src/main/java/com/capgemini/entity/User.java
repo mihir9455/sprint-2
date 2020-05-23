@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "UserTest")
+@Table(name = "UserTable")
 /**
  * 
  * user pojo class

@@ -17,7 +17,7 @@ import com.capgemini.exception.EntityNotFoundException;
 @Service
 /**
  * 
- * @author mahir
+ * @author mihir
  *
  */
 public class UserService implements UserServiceI {
@@ -27,29 +27,23 @@ public class UserService implements UserServiceI {
 	@Autowired
 	TestDao tdao;
 
-	/*
-	 * Add user into database
+	/**
+	 * For adding User
 	 */
 	@Override
-	/**
-	 * to add new user
-	 */
-	public String addUser(User user) {
+	public User addUser(User user) {
 		Long id = dao.getIdByEmail(user.getEmail());
 		if (id != null)
 			throw new EntityAlreadyExists("Email already present");
 		dao.save(user);
-		return "User Created!!";
+		return user;
 
 	}
 
-	/*
-	 * Deletes User from database
-	 */
-	@Override
 	/**
 	 * for deleting an user
 	 */
+	@Override
 	public String deleteUser(String email) {
 		long userId = dao.getIdByEmail(email);
 		Optional<User> findById = dao.findById(userId);
@@ -62,13 +56,10 @@ public class UserService implements UserServiceI {
 
 	}
 
-	/*
-	 * Update User Details
+	/**
+	 * Update User
 	 */
 	@Override
-	/**
-	 * to update user by his/her email
-	 */
 	public String updateUser(String email, User userDetails) {
 		Long userId = dao.getIdByEmail(email);
 		if (userId != null) {
@@ -83,13 +74,10 @@ public class UserService implements UserServiceI {
 		}
 	}
 
-	/*
+	/**
 	 * Gives list Of all Users
 	 */
 	@Override
-	/**
-	 * to see all users except admin
-	 */
 	public List<User> viewAll() {
 		List<User> returnUsers = new ArrayList<User>();
 		List<User> userList = dao.findAll();
@@ -101,13 +89,10 @@ public class UserService implements UserServiceI {
 		return returnUsers;
 	}
 
-	/*
+	/**
 	 * Finds user Object by Id
 	 */
 	@Override
-	/**
-	 * to find user by id
-	 */
 	public Optional<User> findById(long userId) {
 		Optional<User> findById = dao.findById(userId);
 		if (findById.isPresent()) {
@@ -117,13 +102,10 @@ public class UserService implements UserServiceI {
 		}
 	}
 
-	/*
+	/**
 	 * Assigns Test To User
 	 */
 	@Override
-	/**
-	 * to assign test to user
-	 */
 	public String assignTest(String email, int testId) {
 		Long userId = dao.getIdByEmail(email);
 		Optional<User> findById = dao.findById(userId);
@@ -134,18 +116,15 @@ public class UserService implements UserServiceI {
 			dao.save(usr);
 			return "Test Assigned to user";
 		} else {
-			throw new EntityNotFoundException("User or Test does not exist");
+			throw new EntityNotFoundException("Test does not exist");
 		}
 
 	}
 
-	/*
+	/**
 	 * Finds User Object By Email
 	 */
 	@Override
-	/**
-	 * to find user ny email
-	 */
 	public User findUserByEmail(String email) {
 		Long userId = dao.getIdByEmail(email);
 		Optional<User> findById = dao.findById(userId);
